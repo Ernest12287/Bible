@@ -146,14 +146,14 @@ fun DrawerContent(context: Context) {
                 text = "Join our WhatsApp",
                 icon = "💬",
                 onClick = {
-                    openUrl(context, "https://whatsapp.com/channel/YOUR_CHANNEL_ID")
+                    openUrl(context, "https://whatsapp.com/channel/0029VayK4ty7DAWr0jeCZx0i")
                 }
             )
             DrawerItem(
                 text = "Join our Telegram",
                 icon = "✈️",
                 onClick = {
-                    openUrl(context, "https://t.me/YOUR_CHANNEL_USERNAME")
+                    openUrl(context, "https://t.me/ernesttechhouse")
                 }
             )
             HorizontalDivider(Modifier.padding(vertical = 8.dp))
