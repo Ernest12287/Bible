@@ -22,6 +22,7 @@ import com.ernest.bible.ui.theme.BibleTheme
 object Destinations {
     const val INTRO_SCREEN = "intro_screen"
     const val BOOK_LIST_SCREEN = "book_list_screen"
+    const val CHAPTER_LIST = "chapter_list/{bookName}"
     const val CHAPTER_READER = "chapter_reader/{bookName}/{chapterNumber}"
 }
 
@@ -63,9 +64,22 @@ fun AppNavigation(viewModel: BibleViewModel) {
         composable(Destinations.BOOK_LIST_SCREEN) {
             BookListScreen(
                 viewState = state,
-                onBookClicked = { book, chapter ->
-                    navController.navigate("chapter_reader/$book/$chapter")
+                onBookClicked = { bookName ->
+                    navController.navigate("chapter_list/$bookName")
                 }
+            )
+        }
+
+        composable(Destinations.CHAPTER_LIST) { backStackEntry ->
+            val bookName = backStackEntry.arguments?.getString("bookName") ?: "Unknown Book"
+
+            ChapterListScreen(
+                bookName = bookName,
+                dao = viewModel.dao,
+                onChapterClicked = { chapter ->
+                    navController.navigate("chapter_reader/$bookName/$chapter")
+                },
+                onBackPressed = { navController.popBackStack() }
             )
         }
 

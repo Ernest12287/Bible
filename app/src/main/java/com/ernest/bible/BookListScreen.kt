@@ -25,20 +25,18 @@ import kotlinx.coroutines.launch
 @Composable
 fun BookListScreen(
     viewState: BookViewState,
-    onBookClicked: (bookName: String, chapterNumber: Int) -> Unit
+    onBookClicked: (bookName: String) -> Unit
 ) {
     val drawerState = rememberDrawerState(initialValue = DrawerValue.Closed)
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
 
-    // 1. Navigation Drawer Content
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
-            DrawerContent(context = context) // Implements the sidebar menu
+            DrawerContent(context = context)
         }
     ) {
-        // 2. Scaffold (Top Bar and Main Content)
         Scaffold(
             topBar = {
                 TopAppBar(
@@ -57,32 +55,25 @@ fun BookListScreen(
                 )
             }
         ) { padding ->
-            // 3. Main Book List Content
             LazyColumn(modifier = Modifier.padding(padding)) {
 
-                // Old Testament Header
                 item {
                     BookSectionHeader("Old Testament")
                 }
 
-                // Old Testament Books
                 items(viewState.oldTestament) { bookName ->
                     BookListItem(bookName = bookName) {
-                        // Navigate to Chapter 1 of the selected book
-                        onBookClicked(bookName, 1)
+                        onBookClicked(bookName)
                     }
                 }
 
-                // New Testament Header
                 item {
                     BookSectionHeader("New Testament")
                 }
 
-                // New Testament Books
                 items(viewState.newTestament) { bookName ->
                     BookListItem(bookName = bookName) {
-                        // Navigate to Chapter 1 of the selected book
-                        onBookClicked(bookName, 1)
+                        onBookClicked(bookName)
                     }
                 }
             }
@@ -126,7 +117,6 @@ fun BookListItem(bookName: String, onClick: () -> Unit) {
 fun DrawerContent(context: Context) {
     ModalDrawerSheet(modifier = Modifier.width(300.dp)) {
         Column(modifier = Modifier.padding(16.dp)) {
-            // App Logo / Header
             Text(
                 text = "KJV Bible (Ernest)",
                 style = MaterialTheme.typography.headlineSmall,
@@ -141,7 +131,6 @@ fun DrawerContent(context: Context) {
             )
             Spacer(Modifier.height(24.dp))
 
-            // Navigation Items with Working Links
             DrawerItem(
                 text = "Join our WhatsApp",
                 icon = "💬",
@@ -190,7 +179,6 @@ fun DrawerItem(text: String, icon: String, onClick: () -> Unit) {
     }
 }
 
-// Helper function to open URLs
 private fun openUrl(context: Context, url: String) {
     try {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
@@ -200,14 +188,10 @@ private fun openUrl(context: Context, url: String) {
     }
 }
 
-// Check for updates from GitHub Releases
 private fun checkForUpdates(context: Context) {
-    // Open the GitHub releases page
     openUrl(context, "https://github.com/Ernest12287/Bible/releases/latest")
 }
 
-// Show About Dialog (you can customize this later)
 private fun showAboutDialog(context: Context) {
-    // For now, just open the GitHub repo
     openUrl(context, "https://github.com/Ernest12287/Bible")
 }

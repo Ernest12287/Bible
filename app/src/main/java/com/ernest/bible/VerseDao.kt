@@ -15,6 +15,9 @@ interface VerseDao {
     @Query("SELECT DISTINCT bookName FROM verses ORDER BY id ASC")
     fun getBookNames(): Flow<List<String>>
 
+    @Query("SELECT MAX(chapterNumber) FROM verses WHERE bookName = :book")
+    suspend fun getChapterCount(book: String): Int
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(verse: List<Verse>)
 
